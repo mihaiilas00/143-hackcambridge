@@ -2,33 +2,33 @@ public class Bin {
     public int id;
 
     private Location location;
-    private float percFull;
-    private float percGlass;
-    private float percPlastic;
-    private float percPaper;
+    private double percFull;
+    private double percGlass;
+    private double percPlastic;
+    private double percPaper;
 
-    public float getPercFull(){
+    public double getPercFull(){
         return percFull;
     }
-    public float getPercGlass(){
+    public double getPercGlass(){
         return percGlass;
     }
-    public float getPercPlastic(){
+    public double getPercPlastic(){
         return percPlastic;
     }
-    public float getPercPaper(){
+    public double getPercPaper(){
         return percPaper;
     }
 
-    public void updatePercentages(float newFull, float newGlass, float newPlastic, float newPaper){
+    public void updatePercentages(double newFull, double newGlass, double newPlastic, double newPaper){
         percFull = newFull;
         percGlass = newGlass;
         percPlastic = newPlastic;
         percPaper = newPaper;
     }
 
-    public float getDistance(Bin x){
-        float dist = 0;
+    public double getDistance(Bin x){
+        double dist = 0;
         //dist =  lookup[this.id][x.id];
         return dist;
     }

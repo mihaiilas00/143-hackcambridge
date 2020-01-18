@@ -1,4 +1,4 @@
 public class Location {
-    public int x;
-    public int y;
+    public double x;
+    public double y;
 }
