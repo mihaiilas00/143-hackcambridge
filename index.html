@@ -4,42 +4,50 @@
 
 <head>
   <title>Bin Collection Route</title>
-  <!--
+  <meta charset="utf-8">
+
+  <!-- Ensures that IE and Edge uses the latest version and doesn't emulate an older version -->
+  <meta http-equiv="x-ua-compatible" content="IE=Edge">
+
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="node_modules/azure-maps-control/dist/atlas.min.css" type="text/css">
-  <script src="node_modules/azure-maps-control/dist/atlas.min.js"></script> -->
+  <script src="node_modules/azure-maps-control/dist/atlas.min.js"></script>
 
-  <!-- Add references to the Azure Maps Map control JavaScript and CSS files. -->
-  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css">
-  <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
 
-  <!-- Add a reference to the Azure Maps Services Module JavaScript file. -->
-  <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
-
-
-  <script>
-        var map, datasource, client;
-
-        function GetMap() {
-            //Add Map Control JavaScript code here.
-            var map = new atlas.Map("myMap", {
-            //Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
-            authOptions: {
-              authType: 'subscriptionKey',
-              subscriptionKey: 'e0608885-30e7-4e90-8aea-c329e4792528'
-             }
-        });
-        }
-    </script>
+    #myMap {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
 
 </head>
 
-<body onload="GetMap()">
-  <div id="title">
+<body>
+
+  <div id="title" align='center'>
     <h1>Bin Collection Route Suggestion</h1>
   </div>
-  <div id="myMap"></div>
-</body>
 
+  <div id="myMap"></div>
+
+  <script type="text/javascript">
+    //Create an instance of the map control and set some options.
+    var map = new atlas.Map('myMap', {
+      center: [0, 0],
+      zoom: 2,
+      language: 'en-UK',
+      authOptions: {
+        authType: 'subscriptionKey',
+        subscriptionKey: 'Q7QiCa3REAUKcQDfoXaOeciRvN0THdwzmhNx0t8KbWo'
+      }
+    });
+  </script>
+
+</body>
 
 </html>
