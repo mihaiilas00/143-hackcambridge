@@ -1,0 +1,6 @@
+1 plastic 513523.24324324325 
+1 glass 200.0 
+1 paper 60.0 
+2 plastic 70.0 
+2 glass 50.0 
+2 paper 1931.4324324324325 
