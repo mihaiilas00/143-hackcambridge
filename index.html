@@ -9,16 +9,27 @@
   <!-- Ensures that IE and Edge uses the latest version and doesn't emulate an older version -->
   <meta http-equiv="x-ua-compatible" content="IE=Edge">
 
-  <!-- Ensures the web page looks good on all screen sizes. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="node_modules/azure-maps-control/dist/atlas.min.css" type="text/css">
   <script src="node_modules/azure-maps-control/dist/atlas.min.js"></script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+
+    #myMap {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+
 </head>
 
 <body>
 
-  <div id="title">
+  <div id="title" align='center'>
     <h1>Bin Collection Route Suggestion</h1>
   </div>
 
@@ -27,7 +38,7 @@
   <script type="text/javascript">
     //Create an instance of the map control and set some options.
     var map = new atlas.Map('myMap', {
-      center: [-122.33, 60],
+      center: [0, 0],
       zoom: 2,
       language: 'en-UK',
       authOptions: {
