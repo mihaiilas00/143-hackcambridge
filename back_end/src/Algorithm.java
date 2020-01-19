@@ -220,7 +220,6 @@ public class Algorithm {
         List<Bin> result = new ArrayList<Bin>();
         Bin next = end;
         while(next != start){
-            System.out.println(next.id);
             resultAux.add(next);
             next = last.get(next);
         }
@@ -262,6 +261,7 @@ public class Algorithm {
     public static void writePath(List<Bin> list, BufferedWriter writer) throws IOException {
         for(Bin bin : list){
             writer.write(String.valueOf(bin.id));
+            System.out.println(bin.id);
             writer.write(" ");
         }
         writer.write("\n");
