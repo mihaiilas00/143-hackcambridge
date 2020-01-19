@@ -80,6 +80,7 @@ void setup() {
 }
 
 void loop() {
+  digitalWrite(LEDPIN, LOW);
   //Update items count
   unsigned long items_time = millis();
   if (items_time - previous_read_time  >= 100)
@@ -93,6 +94,8 @@ void loop() {
     if (abs(items_distance - ITEMS_MAX) > 10)
     {
       detection_info[ITEMS_INFO] ++;
+      digitalWrite(LEDPIN, HIGH);
+      delay(200);
       previous_items_time = items_time;
     }
   }
