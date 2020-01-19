@@ -26,7 +26,7 @@ map.events.add('ready', function () {
     position: "bottom-right"
   });
   //Load the custom image icon into the map resources.
-  map.imageSprite.add('my-custom-icon', 'https://ichef.bbci.co.uk/images/ic/720x405/p07xty0h.jpg').then(function () {
+  map.imageSprite.add('my-custom-icon', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/wastebasket_1f5d1.png').then(function () {
 
     var points = [
       new atlas.data.Feature(new atlas.data.Point([0.10755819733165595, 52.21099577761569]), { id: 1 }),
@@ -104,6 +104,8 @@ map.events.add('ready', function () {
       )
     ]
 
+    var new_bins = [0.14026, 52.20404]
+
     //Create a data source and add it to the map.
     var datasource_1 = new atlas.source.DataSource();
     map.sources.add(datasource_1);
@@ -111,10 +113,20 @@ map.events.add('ready', function () {
     var dataSource_2 = new atlas.source.DataSource();
     map.sources.add(dataSource_2);
 
+    var dataSource_3 = new atlas.source.DataSource();
+    map.sources.add(dataSource_3);
+
     //Create a point feature and add it to the data source.
     datasource_1.add(points);
 
     dataSource_2.add(regions);
+
+    //Create a circle*/
+    dataSource_3.add(new atlas.data.Feature(new atlas.data.Point(new_bins),
+      {
+        subType: "Circle",
+        radius: 500
+      }));
 
     //Add a layer for rendering point data as symbols.
     map.layers.add(new atlas.layer.SymbolLayer(datasource_1, null, {
@@ -132,7 +144,12 @@ map.events.add('ready', function () {
       opacaty: 0.1,
       visible: false
     }));
+    map.layers.add(new atlas.layer.PolygonLayer(dataSource_3, null, {
+      fillColor: 'green',
+      opacaty: 0.1,
+    }))
   });
+
   /* Update the style of mouse cursor to a pointer */
   map.getCanvasContainer().style.cursor = "pointer";
   /* Create a popup */

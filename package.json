@@ -1,0 +1,26 @@
+{
+  "name": "143-hackcambridge",
+  "version": "1.0.0",
+  "description": "Hi ~~guys~~ _nerds_! :octocat:",
+  "main": "script.js",
+  "dependencies": {
+    "azure-maps-control": "^2.0.20",
+    "express": "^4.17.1",
+    "fetch": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andrewwango/143-hackcambridge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andrewwango/143-hackcambridge/issues"
+  },
+  "homepage": "https://github.com/Andrewwango/143-hackcambridge#readme"
+}
