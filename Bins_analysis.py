@@ -1,9 +1,6 @@
 from collections import deque
-import math
 import os.path
 from datetime import datetime
-import random
-import queue
 import time
 from threading import Thread
 from threading import Condition
@@ -20,16 +17,20 @@ dict_need={}
 
 
 
-c = Condition()
-
 class Bins():
     def __init__(self, ID, full, plastic, glass, paper, number):
         self.ID=ID
         self.full=full
-        self.plastic=plastic
-        self.glass=glass
-        self.paper=paper
         self.number=number
+        if number!=0:
+            self.plastic=(100*plastic)/number
+            self.glass=(100*glass)/number
+            self.paper=(100*paper)/number
+        else:
+            self.plastic=plastic
+            self.glass=glass
+            self.paper=paper
+        
        
 
 
