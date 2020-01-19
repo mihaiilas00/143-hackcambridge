@@ -120,7 +120,7 @@ void loop() {
   {
     // Collect fullness data and summarise all data
     detection_info[FULLNESS_INFO] = 100- ((100*readUS(FULLNESSTRIGPIN, FULLNESSECHOPIN))/FULLNESS_MAX);
-    s += summarise_data();
+    s += summarise_data_pretty();
     if (with_reset)
     {
       detection_info[BUTTON1_INFO] = 0;
@@ -146,6 +146,45 @@ String summarise_data() {
   }
   return summary;
 }
+String summarise_data_pretty() {
+  String summary = "";
+  summary += "IP address: " + WiFi.localIP().toString();
+  summary += "<br>";
+  summary += "Coordinates: [0.11970323994509613, 52.20450244359586]";
+  summary += "<br>";
+  summary += "<br>";
+  summary += "Bin ID: " + String(detection_info[ID_INFO]);
+  summary += "<br>";
+  summary += "Bin is <strong>" + String(detection_info[FULLNESS_INFO]) + "</strong>% full.";
+  summary += "<br>";
+  summary += "<br>";
+  int f = detection_info[FULLNESS_INFO]/10;
+  for (int i=0; i<(10-f); i++)
+  {
+    summary += "<code>|................|</code>";
+    summary += "<br>";    
+  }
+  for (int i=0; i<f; i++)
+  {
+    summary += "<code>|oooooooooooooooo|</code>";
+    summary += "<br>";    
+  }
+  summary += "<code>__________________</code>";
+  summary += "<br>";
+  summary += "<br>";
+  summary += "Since last update:";
+  summary += "<br>";
+  summary += "<strong>Number of plastic items: </strong>" + String(detection_info[BUTTON1_INFO]);
+  summary += "<br>";
+  summary += "<strong>Number of glass items: </strong>" + String(detection_info[BUTTON2_INFO]);
+  summary += "<br>";
+  summary += "<strong>Number of paper items: </strong>" + String(detection_info[BUTTON3_INFO]);
+  summary += "<br>";
+  summary += "<strong>Total number of items: </strong>" + String(detection_info[ITEMS_INFO]);
+  summary += "<br>";
+  return summary;
+}
+
 
 //ULTRASONIC FUNCTIONS
 int readUS(int trigPin, int echoPin)
