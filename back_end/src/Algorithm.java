@@ -3,6 +3,7 @@ import javafx.util.Pair;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Algorithm {
@@ -120,6 +121,10 @@ public class Algorithm {
         regionList.add(new Region(4, list.get(22), list4));
         regionList.add(new Region(5, list.get(24), list5));
 
+        startCouncil = list.get(27);
+        endCouncil = list.get(11);
+        System.out.println(startCouncil.id);
+        System.out.println(endCouncil.id);
 
     }
 
@@ -162,7 +167,7 @@ public class Algorithm {
 
 
 
-    public static void selectCriticalRegion() throws IOException {
+    public static void selectCriticalRegion(BufferedWriter writer) throws IOException {
         double max = 0, fullness;
         int id = 0;
         for(int i = 0; i < regionList.size(); i++){
@@ -174,55 +179,52 @@ public class Algorithm {
             }
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\algorithm_output"));
         writer.write(String.valueOf(id));
         writer.write("\n");
-        writer.close();
+        System.out.println((id));
 
     }
 
     public static List<Bin> dijkstra(Bin start, Bin end){
+
+
+        for(Bin bin : graph.keySet()){
+            dist.put(bin, Double.MAX_VALUE);
+            heap.add(new Edge(bin, Double.MAX_VALUE));
+        }
+
         dist.put(start, 0.0);
         heap.add(new Edge(start, 0.0));
 
-        for(Bin bin : graph.keySet()){
-            dist.put(start, Double.MAX_VALUE);
-            heap.add(new Edge(start, -Double.MAX_VALUE));
-        }
-
         Bin x, y;
         double c;
-        while(!heap.isEmpty())
-        {
-            /*
-            while(!heap.isEmpty() && taken.get(heap.peek().bin))
-                heap.poll();
-            */
-            if(!heap.isEmpty())
+
+            while(!heap.isEmpty())
             {
                 x = heap.peek().bin;
-                taken.put(x, true);
-                if(graph.containsKey(x)) {
+                heap.poll();
                     for (Edge edge : graph.get(x)) {
                         y = edge.bin;
                         c = edge.cost;
                         if (dist.get(x) + c < dist.get(y)) {
                             dist.put(y, dist.get(x) + c);
                             last.put(y, x);
-                            heap.add(new Edge(y, -dist.get(y)));
+                            heap.add(new Edge(y, dist.get(y)));
                         }
                     }
-                }
+
             }
-        }
+
 
         List<Bin> resultAux = new ArrayList<Bin>();
         List<Bin> result = new ArrayList<Bin>();
         Bin next = end;
         while(next != start){
+            System.out.println(next.id);
             resultAux.add(next);
             next = last.get(next);
         }
+        resultAux.add(next);
         for(int i = resultAux.size() - 1; i >= 0; i--){
             result.add(resultAux.get(i));
         }
@@ -257,8 +259,7 @@ public class Algorithm {
         return result;
     }
 
-    public static void writePath(List<Bin> list) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\algorithm_output"));
+    public static void writePath(List<Bin> list, BufferedWriter writer) throws IOException {
         for(Bin bin : list){
             writer.write(String.valueOf(bin.id));
             writer.write(" ");
@@ -267,13 +268,22 @@ public class Algorithm {
     }
 
     public static void main(String[] args) throws IOException{
+        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\algorithm_output"));
+
         feedData();
-        selectCriticalRegion();
+        selectCriticalRegion(writer);
         convertGraph();
+        System.out.println("First \n");
         List<Bin> inBound = selectOptimalPath(kShortestPaths(startCouncil, middleBin, 5));
-        writePath(inBound);
+        writePath(inBound, writer);
+
+        System.out.println(middleBin.id);
+
+        System.out.println("Second \n");
         List<Bin> outBound = selectOptimalPath(kShortestPaths(middleBin, endCouncil, 5));
-        writePath(outBound);
+        writePath(outBound, writer);
+
+        writer.close();
 
 
     }
