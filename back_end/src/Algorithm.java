@@ -20,7 +20,7 @@ public class Algorithm {
     private static Map<Bin, Double> dist;
     private static Map<Bin, Bin> last;
 
-    public static void feedData(){
+    public static void feedData(BufferedWriter writer) throws IOException {
         List<Bin> list = new ArrayList<>();
         List<Bin> list1 = new ArrayList<>();
         List<Bin> list2 = new ArrayList<>();
@@ -30,8 +30,12 @@ public class Algorithm {
         list.add(null);
         for(int i = 1; i <= 30; i++){
             Bin b = new Bin(i, Math.random(), Math.random(), Math.random(), Math.random());
+            writer.write(String.valueOf(b.getPercFull()));
+            writer.write(" ");
             list.add(b);
         }
+        writer.close();
+
 
         streetList.add(new Street(list.get(1), list.get(2), 1600));
         streetList.add(new Street(list.get(1), list.get(4), 900));
@@ -121,8 +125,8 @@ public class Algorithm {
         regionList.add(new Region(4, list.get(22), list4));
         regionList.add(new Region(5, list.get(24), list5));
 
-        startCouncil = list.get(27);
-        endCouncil = list.get(11);
+        startCouncil = list.get(26);
+        endCouncil = list.get(10);
         System.out.println(startCouncil.id);
         System.out.println(endCouncil.id);
 
@@ -268,22 +272,24 @@ public class Algorithm {
     }
 
     public static void main(String[] args) throws IOException{
-        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\algorithm_output"));
+        BufferedWriter writer_alg = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\algorithm_output"));
+        BufferedWriter writer_inp = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\input_random"));
 
-        feedData();
-        selectCriticalRegion(writer);
+        feedData(writer_inp);
+
+        selectCriticalRegion(writer_alg);
         convertGraph();
         System.out.println("First \n");
         List<Bin> inBound = selectOptimalPath(kShortestPaths(startCouncil, middleBin, 5));
-        writePath(inBound, writer);
+        writePath(inBound, writer_alg);
 
         System.out.println(middleBin.id);
 
         System.out.println("Second \n");
         List<Bin> outBound = selectOptimalPath(kShortestPaths(middleBin, endCouncil, 5));
-        writePath(outBound, writer);
+        writePath(outBound, writer_alg);
 
-        writer.close();
+        writer_alg.close();
 
 
     }
