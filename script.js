@@ -26,7 +26,7 @@ map.events.add('ready', function () {
     position: "bottom-right"
   });
   //Load the custom image icon into the map resources.
-  map.imageSprite.add('my-custom-icon', 'https://ichef.bbci.co.uk/images/ic/720x405/p07xty0h.jpg').then(function () {
+  map.imageSprite.add('my-custom-icon', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojione/211/wastebasket_1f5d1.png').then(function () {
 
     var points = [
       new atlas.data.Feature(new atlas.data.Point([0.10755819733165595, 52.21099577761569]), { id: 1 }),
@@ -149,19 +149,7 @@ map.events.add('ready', function () {
       opacaty: 0.1,
     }))
   });
-  function readTextFile(file) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function () {
-      if (rawFile.readyState === 4) {
-        if (rawFile.status === 200 || rawFile.status == 0) {
-          var allText = rawFile.responseText;
-          alert(allText);
-        }
-      }
-    }
-    rawFile.send(null);
-  }
+
   /* Update the style of mouse cursor to a pointer */
   map.getCanvasContainer().style.cursor = "pointer";
   /* Create a popup */
