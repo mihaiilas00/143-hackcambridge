@@ -20,7 +20,8 @@ public class Bin {
         return percPaper;
     }
 
-    public void updatePercentages(double newFull, double newGlass, double newPlastic, double newPaper){
+    public Bin(int id, double newFull, double newGlass, double newPlastic, double newPaper){
+        this.id = id;
         percFull = newFull;
         percGlass = newGlass;
         percPlastic = newPlastic;

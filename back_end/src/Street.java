@@ -7,6 +7,12 @@ public class Street {
     public Bin endBin;
     public double weight;
 
+    public Street(Bin start, Bin end, double cost){
+        startBin = start;
+        endBin = end;
+        weight = cost;
+    }
+
     private List<Bin> binList = new ArrayList<Bin>();
 
     public void setBinList(List<Bin> bins){
