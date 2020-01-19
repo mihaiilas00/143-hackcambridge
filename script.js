@@ -1,7 +1,7 @@
 //Create an instance of the map control and set some options.
 var map = new atlas.Map('myMap', {
   center: [0.13, 52.205],
-  zoom: 14,
+  zoom: 13,
   language: 'en-UK',
   authOptions: {
     authType: 'subscriptionKey',
@@ -61,24 +61,77 @@ map.events.add('ready', function () {
       new atlas.data.Feature(new atlas.data.Point([0.1487999039025567, 52.19823107321963]), { id: 30 })
     ]
 
+    var regions = [
+      new atlas.data.Feature(new atlas.data.Polygon([[
+        [0.13033900451177, 52.2049681852386],
+        [0.09703159332252653, 52.2049681852386],
+        [0.09703159332252653, 52.21406711535121],
+        [0.13033900451177, 52.21406711535121],
+        [0.13033900451177, 52.2049681852386]
+      ]]), { rid: 1 }
+      ),
+      new atlas.data.Feature(new atlas.data.Polygon([[
+        [0.11866092681896134, 52.2049681852386],
+        [0.09703159332252653, 52.2049681852386],
+        [0.09703159332252653, 52.195604336590084],
+        [0.11866092681896134, 52.195604336590084],
+        [0.11866092681896134, 52.2049681852386]
+      ]]), { rid: 3 }
+      ),
+      new atlas.data.Feature(new atlas.data.Polygon([[
+        [0.11866092681896134, 52.2049681852386],
+        [0.11866092681896134, 52.195604336590084],
+        [0.14123439788838255, 52.195604336590084],
+        [0.14123439788838255, 52.2049681852386],
+        [0.11866092681896134, 52.2049681852386]
+      ]]), { rid: 4 }
+      ),
+      new atlas.data.Feature(new atlas.data.Polygon([[
+        [0.14123439788838255, 52.2049681852386],
+        [0.14123439788838255, 52.195604336590084],
+        [0.16213417053194235, 52.195604336590084],
+        [0.16213417053194235, 52.2049681852386],
+        [0.14123439788838255, 52.2049681852386]
+      ]]), { rid: 5 }
+      ),
+      new atlas.data.Feature(new atlas.data.Polygon([[
+        [0.16213417053194235, 52.2049681852386],
+        [0.13033900451177, 52.2049681852386],
+        [0.13033900451177, 52.21406711535121],
+        [0.16213417053194235, 52.21406711535121],
+        [0.16213417053194235, 52.2049681852386]
+      ]]), { rid: 2 }
+      )
+    ]
+
     //Create a data source and add it to the map.
-    var datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
+    var datasource_1 = new atlas.source.DataSource();
+    map.sources.add(datasource_1);
+
+    var dataSource_2 = new atlas.source.DataSource();
+    map.sources.add(dataSource_2);
 
     //Create a point feature and add it to the data source.
-    datasource.add(points);
+    datasource_1.add(points);
+
+    dataSource_2.add(regions);
 
     //Add a layer for rendering point data as symbols.
-    map.layers.add(new atlas.layer.SymbolLayer(datasource, null, {
+    map.layers.add(new atlas.layer.SymbolLayer(datasource_1, null, {
       iconOptions: {
         //Pass in the id of the custom icon that was loaded into the map resources.
         image: 'my-custom-icon',
 
         //Optionally scale the size of the icon.
-        size: 0.1
+        size: 0.05,
       },
+    })
+    );
+    map.layers.add(new atlas.layer.PolygonLayer(dataSource_2, null, {
+      fillColor: 'red',
+      opacaty: 0.1,
+      visible: false
     }));
-    debugger;
   });
   /* Update the style of mouse cursor to a pointer */
   map.getCanvasContainer().style.cursor = "pointer";
