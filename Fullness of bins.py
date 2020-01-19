@@ -311,7 +311,9 @@ def finding_clusters(Full_limit=60):
                 Y_total+=Y_sum[i]
 
             Full_total+=dict_coordinates[element1].full
-            
+            X_total+=dict_coordinates[element1].x
+            Y_total+=dict_coordinates[element1].y
+
             if Full_total>Full_limit*5:
                 x_suggested=X_total/5
                 y_suggested=Y_total/5
@@ -365,7 +367,7 @@ def trigger_coordinates():
         for element in suggested_coordinates:
         
             file_write2.write(str(element[0]))
-            file_write2.write(" ")
+            file_write2.write(" , ")
             file_write2.write(str(element[1]))
             file_write2.write("\n")
 

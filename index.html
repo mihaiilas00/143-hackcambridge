@@ -37,20 +37,6 @@
 
   <script src="script.js"></script>
 
-  <script>
-    function readTextFile() {
-      var rawFile = new XMLHttpRequest();
-      rawFile.open("GET", "testing.txt", true);
-      rawFile.onreadystatechange = function () {
-        if (rawFile.readyState === 4) {
-          var allText = rawFile.responseText;
-          document.getElementById("textSection").innerHTML = allText;
-        }
-      }
-      rawFile.send();
-    }
-  </script>
-
   <button onclick="readTextFile('C:\Users\Nikita Kamath\143-hackcambridge\Output_coordinates.txt')">Click Me</button>
 
 </body>
