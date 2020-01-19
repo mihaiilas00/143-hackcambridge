@@ -2,9 +2,9 @@
 #include <ESP8266mDNS.h>
 
 //HARDCODED ONTO CONTROLLER
-const int ID = 1;
-const int FULLNESS_MAX = 30;
-const int ITEMS_MAX = 30;
+const int ID = 15;
+const int FULLNESS_MAX = 55;
+const int ITEMS_MAX = 31;
 const char WiFiSSID[] = "Brendan's iPhone";
 const char WiFiPSK[] = "88888888";
 
@@ -21,14 +21,17 @@ const int ITEMSECHOPIN = 14;
 // DATA STORES
 int detection_info[6];
 const int ID_INFO = 0;
+const int FULLNESS_INFO = 1;
 const int BUTTON1_INFO = 2;
 const int BUTTON2_INFO = 3;
 const int BUTTON3_INFO = 4;
-const int FULLNESS_INFO = 1;
 const int ITEMS_INFO = 5;
 
+// GLOBAL VARIABLES
 WiFiServer server(80);
 unsigned long previous_items_time = 0;
+unsigned long previous_read_time = 0;
+int items_distance;
 
 //INTERRUPTS
 ICACHE_RAM_ATTR void increment_button1_info()
@@ -78,13 +81,19 @@ void setup() {
 
 void loop() {
   //Update items count
-  if (readUS(ITEMSTRIGPIN, ITEMSECHOPIN) < ITEMS_MAX)
+  unsigned long items_time = millis();
+  if (items_time - previous_read_time  >= 100)
+  {  
+    items_distance = readUS(ITEMSTRIGPIN, ITEMSECHOPIN);
+    Serial.println(items_distance);
+    previous_read_time = items_time;
+  }
+  if (items_time - previous_items_time  >= 1000)
   {
-    unsigned long items_time = millis();
-    if (items_time - previous_items_time  >= 1000)
+    if (abs(items_distance - ITEMS_MAX) > 10)
     {
-        detection_info[ITEMS_INFO] ++;
-        previous_items_time = items_time;
+      detection_info[ITEMS_INFO] ++;
+      previous_items_time = items_time;
     }
   }
   
@@ -103,12 +112,19 @@ void loop() {
   String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\n";
 
   // Match the request
-  int val = -1;
-  if (req.indexOf("/detector_data") != -1)
+  bool with_reset = (req.indexOf("/detector_data_reset") != -1);
+  if ((req.indexOf("/detector_data") != -1) || with_reset)
   {
     // Collect fullness data and summarise all data
-    detection_info[FULLNESS_INFO] = readUS(FULLNESSTRIGPIN, FULLNESSECHOPIN)/FULLNESS_MAX;
+    detection_info[FULLNESS_INFO] = 100- ((100*readUS(FULLNESSTRIGPIN, FULLNESSECHOPIN))/FULLNESS_MAX);
     s += summarise_data();
+    if (with_reset)
+    {
+      detection_info[BUTTON1_INFO] = 0;
+      detection_info[BUTTON2_INFO] = 0;
+      detection_info[BUTTON3_INFO] = 0;
+      detection_info[ITEMS_INFO] = 0;
+    }
   }
   s += "</html>\n";
   client.flush();

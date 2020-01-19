@@ -1,6 +1,6 @@
 // defines pins numbers
-const int trigPin = 12;  //D4
-const int echoPin = 16;  //D3
+const int trigPin = 2;  //D4
+const int echoPin = 14;  //D3
 
 // defines variables
 long duration;
@@ -30,5 +30,5 @@ void loop() {
   // Prints the distance on the Serial Monitor
   Serial.print("Distance: ");
   Serial.println(distance);
-  delay(100);
+  delay(500);
 }
