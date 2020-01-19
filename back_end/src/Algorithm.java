@@ -31,7 +31,7 @@ public class Algorithm {
         for(int i = 1; i <= 30; i++){
             Bin b = new Bin(i, Math.random(), Math.random(), Math.random(), Math.random());
             writer.write(String.valueOf(b.getPercFull()));
-            writer.write(" ");
+            writer.write(",");
             list.add(b);
         }
         writer.close();
@@ -266,9 +266,8 @@ public class Algorithm {
         for(Bin bin : list){
             writer.write(String.valueOf(bin.id));
             System.out.println(bin.id);
-            writer.write(" ");
+            writer.write(",");
         }
-        writer.write("\n");
     }
 
     public static void main(String[] args) throws IOException{
