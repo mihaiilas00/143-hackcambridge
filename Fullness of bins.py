@@ -4,6 +4,7 @@ from datetime import datetime
 import time
 from threading import Thread
 from threading import Condition
+import math
 
 Flag=0
 No_of_bins=500
@@ -142,15 +143,15 @@ def read_coordinates():
     for line in file_read2:
         buffer=[]
            
-            for i in line.strip().split():
-                buffer.append(i)
+        for i in line.strip().split():
+            buffer.append(i)
 
-            name=int(buffer[0])
-            x=float(buffer[1])
-            y=float(buffer[2])
-            for j in range(BINS[0][j]):
-                if BINS[0][j].ID==name:
-                    dict_coordinate[BINS[0][j].ID]=Coordinates(BINS[0][j].ID,dict_averages[BINS[0][j].ID].full,x,y)
+        name=int(buffer[0])
+        x=float(buffer[1])
+        y=float(buffer[2])
+        for j in range(len(BINS[0])):
+            if BINS[0][j].ID==name:
+                dict_coordinates[BINS[0][j].ID]=Coordinates(BINS[0][j].ID,dict_averages[BINS[0][j].ID].full,x,y)
                     
         
 
@@ -237,9 +238,10 @@ def start_statistics(threshold=40):
             file_write.write(str(item[i]))
             file_write.write(" ")
         file_write.write("\n")
+    file_write.close()
     
 def trigger_stats():
-   
+    
     global BINS
     #always_running_thread.join()
     while(True):
@@ -253,10 +255,10 @@ def trigger_stats():
         time.sleep(10)
 
 
-def finding_clusters(Full_limit=70):
+def finding_clusters(Full_limit=60):
     global dict_coordinates
     global suggested_coordinates
-    max1=max2=max3=max41000000
+    max1=max2=max3=max4=1000000
     for element1 in dict_coordinates:
         Full_sum=deque([0,0,0,0])
         X_sum=deque([0,0,0,0])
@@ -264,91 +266,111 @@ def finding_clusters(Full_limit=70):
         Full_total=0
         X_total=0
         Y_total=0
-        for element 2 in dict_coordinates:
+        for element2 in dict_coordinates:
             counter=0
-            Distance=sqrt(dict_coordinates[element1].x-dict_coordinates[element2].x)^2+(dict_coordinates[element1].y-dict_coordinates[element2].y)
-            if Sum<max1:
+            Distance=math.sqrt((dict_coordinates[element1].x-dict_coordinates[element2].x)**2+(dict_coordinates[element1].y-dict_coordinates[element2].y)**2)
+            if Distance<max1:
                 max1=Distance
-                Full_sum.insert(0,Coordinates[element2].full)
+                Full_sum=insert(0,Full_sum,dict_coordinates[element2].full)
                 Full_sum.pop()
-                X_sum.insert(0,dict_coordinates[element2].x)
+                X_sum=insert(0,X_sum,dict_coordinates[element2].x)
                 X_sum.pop()
-                Y_sum.insert(0,dict_coordinates[element2].y)
+                Y_sum=insert(0,Y_sum,dict_coordinates[element2].y)
                 Y_sum.pop()
                 
-            else if Sum<max2:
+            elif Distance<max2:
                 max2=Distance
-                Full_sum.insert(1,Coordinates[element2].full)
+                Full_sum=insert(1,Full_sum,dict_coordinates[element2].full)
                 Full_sum.pop()
-                X_sum.insert(1,dict_coordinates[element2].x)
+                X_sum=insert(1,X_sum,dict_coordinates[element2].x)
                 X_sum.pop()
-                Y_sum.insert(1,dict_coordinates[element2].y)
+                Y_sum=insert(1,Y_sum,dict_coordinates[element2].y)
                 Y_sum.pop()
                 
-            else if Sum<max3:
+            elif Distance<max3:
                 max3=Distance
-                Full_sum.insert(2,Coordinates[element2].full)
+                Full_sum=insert(2,Full_sum,dict_coordinates[element2].full)
                 Full_sum.pop()
-                X_sum.insert(2,dict_coordinates[element2].x)
+                X_sum=insert(2,X_sum,dict_coordinates[element2].x)
                 X_sum.pop()
-                Y_sum.insert(2,dict_coordinates[element2].y)
+                Y_sum=insert(2,Y_sum,dict_coordinates[element2].y)
                 Y_sum.pop()
-            else if Sum<max4:
+                
+            elif Distance<max4:
                 max4=Distance
-                Full_sum.insert(3,Coordinates[element2].full)
+                Full_sum=insert(3,Full_sum,dict_coordinates[element2].full)
                 Full_sum.pop()
-                X_sum.insert(3,dict_coordinates[element2].x)
+                X_sum=insert(3,X_sum,dict_coordinates[element2].x)
                 X_sum.pop()
-                Y_sum.insert(3,dict_coordinates[element2].y)
+                Y_sum=insert(3,Y_sum,dict_coordinates[element2].y)
                 Y_sum.pop()
+                
             for i in range(4):
                 Full_total+=Full_sum[i]
-                X_total+=X_sum[x]
-                Y_total+=Y_sum[y]
+                X_total+=X_sum[i]
+                Y_total+=Y_sum[i]
 
+            Full_total+=dict_coordinates[element1].full
+            
             if Full_total>Full_limit*5:
                 x_suggested=X_total/5
                 y_suggested=Y_total/5
-                suggested_coordinates.append(x_suggested,y_suggested)
+                suggested_coordinates.append((x_suggested,y_suggested))
 
             else:
-                X_total-=X_sum[4]
-                Y_total-=Y_sum[4]
-                Full_total-=Full_sum[4]
+                X_total-=X_sum[3]
+                Y_total-=Y_sum[3]
+                Full_total-=Full_sum[3]
                 if Full_total>Full_limit*4:
                     x_suggested=X_total/4
                     y_suggested=Y_total/4
-                    suggested_coordinates.append(x_suggested,y_suggested)
+                    suggested_coordinates.append((x_suggested,y_suggested))
                     
                 else:
-                    X_total-=X_sum[3]
-                    Y_total-=Y_sum[3]
-                    Full_total-=Full_sum[3]
+                    X_total-=X_sum[2]
+                    Y_total-=Y_sum[2]
+                    Full_total-=Full_sum[2]
                     if Full_total>Full_limit*3:
                         x_suggested=X_total/3
                         y_suggested=Y_total/3
-                        suggested_coordinates.append(x_suggested,y_suggested)
+                        suggested_coordinates.append((x_suggested,y_suggested))
                         
-     return suggested_coordinates           
+    suggested_coordinates=list(set(suggested_coordinates))
+    return suggested_coordinates
+
+def insert(i,queue,element):
+    
+    queue.append(0)
+    for j in range(len(queue)-2,i-1,-1):
+        queue[j+1]=queue[j]
+    
+    queue[i]=element
+    return queue
                 
-def trigger_coordinates()
+def trigger_coordinates():
     global BINS
     global dict_averages
     script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, 'Output_coordinates.txt')
-    file_write2 = open(file_path, "w+")
+    file_path2 = os.path.join(script_dir, 'Output_coordinates.txt')
+    
             
     while(True):
+        file_write2 = open(file_path2, "w+")
         read_coordinates()
         suggested_coordinates=finding_clusters()
+        print("New bins needed at")
+        for j in range(len(suggested_coordinates)):
+            print(suggested_coordinates[j][0]," ",suggested_coordinates[j][1])
+           
         for element in suggested_coordinates:
-            print("New bins needed at:")
-            print(element[0]," ",element[1])
         
             file_write2.write(str(element[0]))
             file_write2.write(" ")
             file_write2.write(str(element[1]))
-            file_write.write("\n")
+            file_write2.write("\n")
+
+        file_write2.close()
+        time.sleep(10)
 
             
 
@@ -358,10 +380,17 @@ always_running_thread.start()
 
 time.sleep(2)
 
-stats = Thread(target=trigger_stats(), args=())    #Running the statistic analysis in a second thread
-stats.start()
 
-coordinates=Thread(target=trigger_coordinates(),args=())
+
+
+stats_thread = Thread(target=trigger_stats, args=())    #Running the statistic analysis in a second thread
+
+stats_thread.start()
+
+
+time.sleep(2)
+
+coordinates=Thread(target=trigger_coordinates,args=())
 coordinates.start()
 
 always_running_thread.join()
