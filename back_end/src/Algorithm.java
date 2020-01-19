@@ -268,7 +268,7 @@ public class Algorithm {
     }
 
     public static void main(String[] args) throws IOException{
-        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Stefi\\143-hackcambridge\\back_end\\out\\algorithm_output"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Nikita Kamath\\143-hackcambridge\\back_end\\out\\algorithm_output"));
 
         feedData();
         selectCriticalRegion(writer);
